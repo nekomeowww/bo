@@ -50,7 +50,7 @@ linters-settings:
     ignored-functions:
       - "context.WithTimeout"
     ignored-files:
-      - "examples\/.*"
+      - "examples/.*"
   gocritic:
     disabled-checks:
       - ifElseChain
