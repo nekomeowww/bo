@@ -1,7 +1,7 @@
 # `bo`
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/nekomeowww/bo.svg)](https://pkg.go.dev/github.com/nekomeowww/bo)
-![](https://github.com/nekomeowww/bo/actions/workflows/ci.yml/badge.svg)
+![](https://github.com/nekomeowww/bo/actions/workflows/ci.yaml/badge.svg)
 [![](https://goreportcard.com/badge/github.com/nekomeowww/bo)](https://goreportcard.com/report/github.com/nekomeowww/bo)
 
 🚀 bo, BootKit for easily bootstrapping multi-goroutine applications, CLIs, can be used as drop-in replacement of `uber/fx`
