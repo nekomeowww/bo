@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestLifeCycleHook_Start(t *testing.T) {
+func TestHook_Start(t *testing.T) {
 	t.Parallel()
 
 	l := Hook{}
@@ -30,7 +30,7 @@ func TestLifeCycleHook_Start(t *testing.T) {
 	})
 }
 
-func TestLifeCycleHook_Stop(t *testing.T) {
+func TestHook_Stop(t *testing.T) {
 	t.Parallel()
 
 	l := Hook{}

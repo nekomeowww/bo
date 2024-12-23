@@ -2,12 +2,15 @@ package bo
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"os"
 	"os/signal"
 	"sync"
 	"syscall"
 	"time"
+
+	"github.com/samber/lo"
 )
 
 const (
@@ -18,7 +21,7 @@ const (
 type Runnable func(ctx context.Context, lifeCycle LifeCycle) error
 
 type BootKit struct {
-	options     *boOptions
+	options     *bootkitOptions
 	parallelRun []Runnable
 	lifeCycle   *lifeCycle
 
@@ -29,8 +32,8 @@ type BootKit struct {
 }
 
 func New(options ...Option) *BootKit {
-	applyOptions := &boApplyOptions{
-		bootkit: &boOptions{
+	applyOptions := &bootkitApplyOptions{
+		bootkit: &bootkitOptions{
 			startTimeout: DefaultStartTimeout,
 			stopTimeout:  DefaultStopTimeout,
 		},
@@ -118,7 +121,7 @@ func callStopHooks(ctx context.Context, hooks []lifeCycler) error {
 	wg := sync.WaitGroup{}
 	errChan := make(chan error)
 
-	for _, hook := range hooks {
+	for _, hook := range lo.Reverse(hooks) {
 		wg.Add(1)
 
 		go func() {
@@ -157,28 +160,37 @@ func (b *BootKit) Start() {
 	err := callRunnable(ctx, b.parallelRun, b.lifeCycle)
 	if err != nil {
 		slog.Error("failed to run", "error", err)
-		b.mayStop(context.Background())
+		b.mayStop()
 
 		return
 	}
 
-	errChan := make(chan error, len(b.lifeCycle.hooks))
-	callStartHook(ctx, startWg, errChan, b.lifeCycle.hooks)
+	errChan := make(chan error, len(b.lifeCycle.GetHooks()))
+	callStartHook(ctx, startWg, errChan, b.lifeCycle.GetHooks())
 
 	go func() {
-		sigs := make(chan os.Signal, 1)
+		sigs := make(chan os.Signal, 2) //nolint:mnd
 		signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-		<-sigs
-		b.selfCancel()
+		cancelled := false
+
+		for range sigs {
+			// Double signal will force exit
+			if cancelled {
+				fmt.Fprintln(os.Stderr, "received signal, force terminated")
+				os.Exit(1)
+			}
+
+			b.selfCancel()
+			cancelled = true
+		}
 	}()
 
-	defer b.mayStop(context.Background())
+	defer b.mayStop()
 
 	for {
 		select {
 		case err := <-errChan:
 			slog.Error("failed to start", "error", err)
-
 			return
 		case <-waitGroupToChan(startWg):
 			return
@@ -188,19 +200,19 @@ func (b *BootKit) Start() {
 	}
 }
 
-func (b *BootKit) stop(ctx context.Context) error {
-	if len(b.lifeCycle.hooks) == 0 {
+func (b *BootKit) stop() error {
+	if len(b.lifeCycle.GetHooks()) == 0 {
 		return nil
 	}
 
-	ctx, cancel := context.WithTimeout(ctx, b.options.stopTimeout)
+	ctx, cancel := context.WithTimeout(context.Background(), b.options.stopTimeout)
 	defer cancel()
 
-	return callStopHooks(ctx, b.lifeCycle.hooks)
+	return callStopHooks(ctx, b.lifeCycle.GetHooks())
 }
 
-func (b *BootKit) mayStop(ctx context.Context) {
-	err := b.stop(ctx)
+func (b *BootKit) mayStop() {
+	err := b.stop()
 	if err != nil {
 		slog.Error("failed to stop", "error", err)
 	}
@@ -212,5 +224,5 @@ func (b *BootKit) Stop(ctx context.Context) error {
 
 	b.selfCancel()
 
-	return b.stop(ctx)
+	return b.stop()
 }

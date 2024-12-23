@@ -43,6 +43,13 @@ type lifeCycle struct {
 	mutex sync.Mutex
 }
 
+func (l *lifeCycle) GetHooks() []lifeCycler {
+	l.mutex.Lock()
+	defer l.mutex.Unlock()
+
+	return append([]lifeCycler{}, l.hooks...) // 返回一个拷贝，避免外部修改
+}
+
 func (l *lifeCycle) Append(hook Hook) {
 	l.mutex.Lock()
 	defer l.mutex.Unlock()
@@ -50,8 +57,16 @@ func (l *lifeCycle) Append(hook Hook) {
 	l.hooks = append(l.hooks, hook)
 }
 
+type EmptyLifeCycle struct{}
+
+func (*EmptyLifeCycle) Append(Hook) {}
+
 func newLifeCycle() *lifeCycle {
 	return &lifeCycle{
 		hooks: make([]lifeCycler, 0),
 	}
+}
+
+func NewEmptyLifeCycle() LifeCycle {
+	return &EmptyLifeCycle{}
 }
