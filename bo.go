@@ -10,7 +10,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/samber/lo"
+	"github.com/nekomeowww/xo"
+	"github.com/samber/lo/mutable"
 )
 
 const (
@@ -121,7 +122,10 @@ func callStopHooks(ctx context.Context, hooks []lifeCycler) error {
 	wg := sync.WaitGroup{}
 	errChan := make(chan error)
 
-	for _, hook := range lo.Reverse(hooks) {
+	reversedHooks := xo.Clone(hooks)
+	mutable.Reverse(reversedHooks)
+
+	for _, hook := range reversedHooks {
 		wg.Add(1)
 
 		go func() {
