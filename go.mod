@@ -4,7 +4,7 @@ go 1.23.2
 
 require (
 	github.com/labstack/echo/v4 v4.13.3
-	github.com/nekomeowww/xo v1.15.1
+	github.com/nekomeowww/xo v1.15.2
 	github.com/samber/lo v1.49.1
 	github.com/stretchr/testify v1.10.0
 )
