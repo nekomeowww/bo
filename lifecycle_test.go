@@ -14,7 +14,7 @@ func TestHook_Start(t *testing.T) {
 	l := Hook{}
 
 	require.NotPanics(t, func() {
-		err := l.Start(context.Background())
+		err := l.Start(t.Context())
 		assert.NoError(t, err)
 	})
 
@@ -25,7 +25,7 @@ func TestHook_Start(t *testing.T) {
 	}
 
 	require.NotPanics(t, func() {
-		err := l.Start(context.Background())
+		err := l.Start(t.Context())
 		assert.NoError(t, err)
 	})
 }
@@ -36,7 +36,7 @@ func TestHook_Stop(t *testing.T) {
 	l := Hook{}
 
 	require.NotPanics(t, func() {
-		err := l.Stop(context.Background())
+		err := l.Stop(t.Context())
 		assert.NoError(t, err)
 	})
 
@@ -47,7 +47,7 @@ func TestHook_Stop(t *testing.T) {
 	}
 
 	require.NotPanics(t, func() {
-		err := l.Stop(context.Background())
+		err := l.Stop(t.Context())
 		assert.NoError(t, err)
 	})
 }

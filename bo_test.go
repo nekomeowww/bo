@@ -57,7 +57,7 @@ func TestWaitDoneOrContextDone(t *testing.T) {
 	t.Run("ImmediatelyWaitGroupDone", func(t *testing.T) {
 		t.Parallel()
 
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+		ctx, cancel := context.WithTimeout(t.Context(), time.Second*5)
 		defer cancel()
 
 		wg := new(sync.WaitGroup)
@@ -70,7 +70,7 @@ func TestWaitDoneOrContextDone(t *testing.T) {
 	t.Run("OneSecondWaitGroupDone", func(t *testing.T) {
 		t.Parallel()
 
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+		ctx, cancel := context.WithTimeout(t.Context(), time.Second*5)
 		defer cancel()
 
 		wg := new(sync.WaitGroup)
@@ -92,7 +92,7 @@ func TestWaitDoneOrContextDone(t *testing.T) {
 	t.Run("ContextDoneBeforeWaitGroupDone", func(t *testing.T) {
 		t.Parallel()
 
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*1)
+		ctx, cancel := context.WithTimeout(t.Context(), time.Second*1)
 		defer cancel()
 
 		wg := new(sync.WaitGroup)
@@ -115,7 +115,7 @@ func TestWaitDoneOrContextDone(t *testing.T) {
 	t.Run("ErrorCircuitBreak", func(t *testing.T) {
 		t.Parallel()
 
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*1)
+		ctx, cancel := context.WithTimeout(t.Context(), time.Second*1)
 		defer cancel()
 
 		wg := new(sync.WaitGroup)
@@ -149,7 +149,7 @@ func TestCallRunnable(t *testing.T) {
 
 		lf := newLifeCycle()
 
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+		ctx, cancel := context.WithTimeout(t.Context(), time.Second*3)
 		defer cancel()
 
 		err := callRunnable(ctx, []Runnable{
@@ -191,7 +191,7 @@ func TestCallRunnable(t *testing.T) {
 
 		lf := newLifeCycle()
 
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*1)
+		ctx, cancel := context.WithTimeout(t.Context(), time.Second*1)
 		defer cancel()
 
 		err := callRunnable(ctx, []Runnable{
@@ -215,7 +215,7 @@ func TestCallRunnable(t *testing.T) {
 
 		lf := newLifeCycle()
 
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+		ctx, cancel := context.WithTimeout(t.Context(), time.Second*3)
 		defer cancel()
 
 		time.AfterFunc(time.Second, cancel)
@@ -241,7 +241,7 @@ func TestCallRunnable(t *testing.T) {
 
 		lf := newLifeCycle()
 
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+		ctx, cancel := context.WithTimeout(t.Context(), time.Second*3)
 		defer cancel()
 
 		err := callRunnable(ctx, []Runnable{
@@ -394,7 +394,7 @@ func TestCallStopHooks(t *testing.T) {
 			},
 		}
 
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+		ctx, cancel := context.WithTimeout(t.Context(), time.Second*5)
 		defer cancel()
 
 		err := callStopHooks(ctx, hooks)
@@ -445,7 +445,7 @@ func TestCallStopHooks(t *testing.T) {
 			},
 		}
 
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+		ctx, cancel := context.WithTimeout(t.Context(), time.Second*5)
 		defer cancel()
 
 		err := callStopHooks(ctx, hooks)
@@ -498,7 +498,7 @@ func TestCallStopHooks(t *testing.T) {
 			},
 		}
 
-		ctx, cancel := context.WithTimeout(context.Background(), time.Second*2)
+		ctx, cancel := context.WithTimeout(t.Context(), time.Second*2)
 		defer cancel()
 
 		err := callStopHooks(ctx, hooks)
@@ -551,7 +551,7 @@ func TestCallStopHooks(t *testing.T) {
 			},
 		}
 
-		ctx, cancel := context.WithCancel(context.Background())
+		ctx, cancel := context.WithCancel(t.Context())
 		time.AfterFunc(time.Second, cancel)
 
 		err := callStopHooks(ctx, hooks)
@@ -572,7 +572,7 @@ func TestWaitGroupToChan(t *testing.T) {
 
 	wg := new(sync.WaitGroup)
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	ctx, cancel := context.WithTimeout(t.Context(), time.Second*5)
 	defer cancel()
 
 	wg.Add(1)
@@ -921,7 +921,7 @@ func TestBootkit_Stop(t *testing.T) {
 		})
 
 		time.AfterFunc(time.Second, func() {
-			err := bootkit.Stop(context.Background())
+			err := bootkit.Stop(t.Context())
 			assert.NoError(t, err)
 		})
 
@@ -943,7 +943,7 @@ func TestBootkit_Stop(t *testing.T) {
 		})
 
 		time.AfterFunc(time.Second, func() {
-			err := bootkit.Stop(context.Background())
+			err := bootkit.Stop(t.Context())
 			assert.NoError(t, err)
 		})
 
