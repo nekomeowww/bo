@@ -295,7 +295,7 @@ func TestCallStartHooks(t *testing.T) {
 			},
 		}
 
-		callStartHook(context.TODO(), wg, errChan, hooks)
+		callStartHook(t.Context(), wg, errChan, hooks)
 		wg.Wait()
 
 		assert.Empty(t, errChan)
@@ -336,7 +336,7 @@ func TestCallStartHooks(t *testing.T) {
 		}
 
 		errChan := make(chan error, len(hooks))
-		callStartHook(context.TODO(), wg, errChan, hooks)
+		callStartHook(t.Context(), wg, errChan, hooks)
 		wg.Wait()
 
 		err := <-errChan
