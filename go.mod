@@ -4,13 +4,13 @@ go 1.24.0
 
 require (
 	github.com/labstack/echo/v4 v4.13.3
-	github.com/nekomeowww/xo v1.15.2
-	github.com/samber/lo v1.49.1
+	github.com/nekomeowww/xo v1.16.0
+	github.com/samber/lo v1.50.0
 	github.com/stretchr/testify v1.10.0
 )
 
 require (
-	entgo.io/ent v0.14.1 // indirect
+	entgo.io/ent v0.14.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
@@ -24,6 +24,6 @@ require (
 	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
-	google.golang.org/protobuf v1.36.5 // indirect
+	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
