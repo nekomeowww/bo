@@ -204,6 +204,15 @@ func (b *BootKit) Start() {
 	}
 }
 
+func (b *BootKit) Stop(ctx context.Context) error {
+	b.mutex.Lock()
+	defer b.mutex.Unlock()
+
+	b.selfCancel()
+
+	return b.stop()
+}
+
 func (b *BootKit) stop() error {
 	if len(b.lifeCycle.GetHooks()) == 0 {
 		return nil
@@ -220,13 +229,4 @@ func (b *BootKit) mayStop() {
 	if err != nil {
 		slog.Error("failed to stop", "error", err)
 	}
-}
-
-func (b *BootKit) Stop(ctx context.Context) error {
-	b.mutex.Lock()
-	defer b.mutex.Unlock()
-
-	b.selfCancel()
-
-	return b.stop()
 }
