@@ -357,6 +357,7 @@ func TestCallStopHooks(t *testing.T) {
 		t.Parallel()
 
 		var mu sync.Mutex
+
 		startHookRan := make([]bool, 2)
 		stopHookRan := make([]bool, 2)
 		hooks := []lifeCycler{
@@ -412,6 +413,7 @@ func TestCallStopHooks(t *testing.T) {
 		t.Parallel()
 
 		var mu sync.Mutex
+
 		startHookRan := make([]bool, 2)
 		stopHookRan := make([]bool, 2)
 		hooks := []lifeCycler{
@@ -464,6 +466,7 @@ func TestCallStopHooks(t *testing.T) {
 		t.Parallel()
 
 		var mu sync.Mutex
+
 		startHookRan := make([]bool, 2)
 		stopHookRan := make([]bool, 2)
 		hooks := []lifeCycler{
@@ -517,6 +520,7 @@ func TestCallStopHooks(t *testing.T) {
 		t.Parallel()
 
 		var mu sync.Mutex
+
 		startHookRan := make([]bool, 2)
 		stopHookRan := make([]bool, 2)
 		hooks := []lifeCycler{
@@ -897,6 +901,7 @@ func TestBootkit_Stop(t *testing.T) {
 		bootkit := New()
 
 		var mu sync.Mutex
+
 		startCalled := false
 		stopCalled := false
 

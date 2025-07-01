@@ -42,9 +42,14 @@ linters:
       rules:
         - name: blank-imports
           disabled: true
-    wsl:
-      strict-append: false
-      allow-assign-and-call: false
+    wsl_v5:
+      allow-first-in-block: true
+      allow-whole-block: false
+      branch-max-lines: 2
+      enable:
+        - assign-expr
+      disable:
+        - append
   exclusions:
     generated: lax
     presets:
